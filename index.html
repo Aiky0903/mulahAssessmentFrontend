@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mulah Loyalty</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        width: 614px;
+        height: 1136px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 20%;
+      }
+
+      img {
+        transform: scale(0.4);
+      }
+
+      .container {
+        flex: 1 1 0;
+        width: 100%;
+        padding: 3rem;
+      }
+
+      .page1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5rem;
+        padding-top: 3rem;
+      }
+
+      .welcome {
+        font-size: 61px;
+        color: rgb(37, 35, 35);
+      }
+
+      .loyalty {
+        font-weight: 700;
+        color: orange;
+        font-size: 1.3rem;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      #country-code {
+        border: 0;
+        border-bottom: 1px orange solid;
+        background: none;
+        padding: 10px;
+      }
+
+      #phone-number {
+        border: 0;
+        border-bottom: 1px orange solid;
+        padding: 10px;
+        flex: 1 1 0;
+      }
+
+      .page1Button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      button {
+        background-color: #e87722;
+        color: white;
+        cursor: pointer;
+        padding: 1rem;
+        border: none;
+        border-radius: 3rem;
+        width: 80%;
+      }
+
+      .page2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+      }
+
+      .details{
+        font-style: italic;
+      }
+
+      .confirm{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .confirm-row {
+        display: flex;
+        width: 100%;
+        margin-bottom: 3rem;
+      }
+
+      .confirm-label {
+        width: 120px;
+        font-weight: bold;
+        text-align: right;
+        padding-right: 10px;
+
+        font-size: 20px;
+
+        color: #e87722;
+      }
+
+      .confirm-value {
+        flex: 1;
+
+        font-size: 20px;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 14px;
+      }
+
+      footer {
+        height: 15%;
+        width: 100%;
+        margin: auto;
+        border-top: 2px solid rgb(114, 112, 112, 0.25);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      a {
+        color: blue;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img src="assets/mulah_logo.png" alt="" />
+      </header>
+      <section id="page1" class="page1">
+        <div class="welcome">
+          <div>Hello,</div>
+          <div>Welcome !</div>
+        </div>
+        <div class="loyalty">Check Your Loyalty Points & Rewards</div>
+        <div class="input-group">
+          <select id="country-code">
+            <option value="+60">+60</option>
+          </select>
+          <input
+            type="text"
+            id="phone-number"
+            placeholder="Enter your mobile number"
+            onkeypress="return isNumber(event)"
+          />
+        </div>
+        <div class="page1Button">
+          <button onclick="checkLoyalty()">Check Loyalty Points</button>
+        </div>
+        <p class="error-message" id="error-msg"></p>
+      </section>
+
+      <section id="page2" class="page2" style="display: none">
+        <div class="register"><h2>Registration</h2></div>
+        <p class="details">Please fill up your details.</p>
+        <input type="text" id="name" placeholder="Enter Name" />
+        <input type="text" id="birthday" placeholder="DD/MM/YYYY" />
+        <input type="email" id="email" placeholder="Email Address" />
+        <button onclick="register()">Continue</button>
+      </section>
+      <section id="page3" style="display: none">
+        <div class="confirm">
+          <h2 style="align-self: center; margin-bottom: 2rem;">User registered</h2>
+          <div class="confirm-row">
+            <div class="confirm-label">Phone Number:</div>
+            <div class="confirm-value" id="display-phone"></div>
+          </div>
+          <div class="confirm-row">
+            <div class="confirm-label">Name:</div>
+            <div class="confirm-value" id="display-name"></div>
+          </div>
+          <div class="confirm-row">
+            <div class="confirm-label">Birthday:</div>
+            <div class="confirm-value" id="display-birthday"></div>
+          </div>
+          <div class="confirm-row">
+            <div class="confirm-label">Email:</div>
+            <div class="confirm-value" id="display-email"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>Powered by <a>MulahRewards.com</a></p>
+    </footer>
+
+    <script>
+      function isNumber(evt) {
+        let charCode = evt.which ? evt.which : evt.keyCode;
+        if (charCode < 48 || charCode > 57) {
+          return false;
+        }
+        return true;
+      }
+
+      function checkLoyalty() {
+        let phone = document.getElementById("phone-number").value;
+        if (phone === "173527250") {
+          document.getElementById("page1").style.display = "none";
+          document.getElementById("page2").style.display = "flex";
+        } else {
+          document.getElementById("error-msg").innerText =
+            "Invalid phone number.";
+        }
+      }
+
+      function register() {
+        let name = document.getElementById("name").value;
+        let birthday = document.getElementById("birthday").value;
+        let email = document.getElementById("email").value;
+        let phone = "+60173527250";
+
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("name", name);
+        localStorage.setItem("birthday", birthday);
+        localStorage.setItem("email", email);
+
+        document.getElementById("page2").style.display = "none";
+        document.getElementById("page3").style.display = "block";
+
+        document.getElementById("display-phone").innerText = phone;
+        document.getElementById("display-name").innerText = name;
+        document.getElementById("display-birthday").innerText = birthday;
+        document.getElementById("display-email").innerText = email;
+      }
+    </script>
+  </body>
+</html>
